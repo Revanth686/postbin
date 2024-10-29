@@ -20,6 +20,7 @@ import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserProfile } from "@/repository/user.service";
 import { auth } from "@/config/firebaseConfig";
+import toast, { Toaster } from "react-hot-toast";
 
 const initialValue: UserSignup = {
   email: "",
@@ -33,6 +34,10 @@ const Signup: React.FunctionComponent<ISignupProps> = () => {
   const navigate = useNavigate();
   const { googleSignIn, signup } = React.useContext(userAuthContext);
   const [userInfo, setUserInfo] = React.useState<UserSignup>(initialValue); //for emailSignup
+  const notify = {
+    success: (msg: string) => toast.success(msg),
+    error: (msg: string) => toast.error(msg),
+  };
   const handleSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -47,12 +52,13 @@ const Signup: React.FunctionComponent<ISignupProps> = () => {
             photoURL: image1,
           });
         }
+        notify.success(`signup successful`);
         navigate("/");
       })();
     } catch (err) {
       console.log(`error firebase-signinup with email,pwd ${err}`);
+      notify.error(`error firebase-signinup with email,pwd ${err}`);
       navigate("/signup");
-      //TODO: toast messages for signin,up
     }
     console.log(userInfo);
   };
@@ -70,6 +76,7 @@ const Signup: React.FunctionComponent<ISignupProps> = () => {
   };
   return (
     <div className="bg-slate-800 w-full h-screen">
+      <Toaster />
       <div className="container mx-auto p-6 flex h-full">
         <div className="flex justify-center items-center w-full">
           <div className="p-6 w-2/3 hidden lg:block">

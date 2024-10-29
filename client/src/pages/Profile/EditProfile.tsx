@@ -13,6 +13,7 @@ import {
   updateUserProfile,
 } from "@/repository/user.service";
 import { userAuthContext, updateProfileInfo } from "@/context/userAuth";
+import toast from "react-hot-toast";
 
 interface IEditProfileProps {}
 
@@ -46,13 +47,14 @@ const EditProfile: React.FunctionComponent<IEditProfileProps> = () => {
         displayName: data.displayName,
         photoURL: data.photoURL,
       };
-
       // /*add these fields in firebase auth user*/
       updateProfileInfo(profileInfo);
       // updateUserInfoOnPosts(profileInfo);
+      toast.success("Profile updated successfully");
 
       navigate("/profile");
     } catch (err) {
+      toast.error("Error updating profile");
       console.log(err);
     }
   };

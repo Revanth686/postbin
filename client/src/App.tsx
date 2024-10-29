@@ -17,5 +17,4 @@ export default App;
 //BUG: no sync btw firebase user, users collection:
 //when user signs in, and uploads a post-> the user is not present in users collection
 //hence when uploading posts, displayName, photoURL are absent since were fetching those details from users collection(firebaseAuth->userId)
-//FIX: add user to users collection when user signs up
-//FIX: add displayName, photoURL in 'Post' type
+//HACK: add user to users collection when user signs up

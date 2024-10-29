@@ -18,6 +18,7 @@ import image3 from "@/assets/images/image3.jpg";
 import image4 from "@/assets/images/image4.jpg";
 import { Label } from "@radix-ui/react-label";
 import { Link, useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 interface ILoginProps {}
 
@@ -28,6 +29,10 @@ const Login: React.FC<ILoginProps> = () => {
     email: "rand",
     password: "pwd",
   });
+  const notify = {
+    success: (msg: string) => toast.success(msg),
+    error: (msg: string) => toast.error(msg),
+  };
   const handleSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -35,8 +40,10 @@ const Login: React.FC<ILoginProps> = () => {
         const userCreds = await login(userInfo.email, userInfo.password);
         console.log(`signin sucxful ${userCreds}`);
       })();
+      notify.success(`signin successful`);
       navigate("/");
     } catch (e) {
+      notify.error(`error signin with email,pwd ${e}`);
       throw new Error(`error signin with email,pwd ${e}`);
     }
   };
@@ -46,6 +53,7 @@ const Login: React.FC<ILoginProps> = () => {
       (async () => {
         const userCredentials = await googleSignIn();
         console.log(`google signin sucxful ${userCredentials}`);
+        notify.success(`google signin successful`);
         navigate("/");
       })();
     } catch (e) {
@@ -54,6 +62,7 @@ const Login: React.FC<ILoginProps> = () => {
   };
   return (
     <div className="bg-slate-800 w-full h-screen">
+      <Toaster />
       <div className="container mx-auto p-6 flex h-full">
         <div className="flex justify-center items-center w-full">
           <div className="p-6 w-2/3 hidden lg:block">

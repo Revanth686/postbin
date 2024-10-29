@@ -8,6 +8,7 @@ import { FileEntry, PhotoMeta, Post } from "@/shared.types";
 import { getAuth } from "firebase/auth";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 interface IPostProps {}
@@ -42,8 +43,10 @@ const AddPost: React.FC<IPostProps> = () => {
       };
       console.log(`final post ${JSON.stringify(newPost)}`);
       createPost(newPost);
+      toast.success("Post created successfully");
       navigate("/");
     } else {
+      toast.error("Please login to post");
       navigate("/login");
     }
   };
